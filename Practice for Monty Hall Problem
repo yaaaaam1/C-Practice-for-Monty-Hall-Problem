@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>   
+#define games 10000
+
+int main(){
+	srand((unsigned)time(NULL));
+	int choice1, choice2, j, win_same = 0, win_change = 0,change,same;
+	for (j = 0; j <= games; j++) {
+		int door[3] = { 0 }; //三扇門 初始為含有三個零的陣列
+		door[rand() % 3] = 1; //此為car
+		choice1 = rand() % 3;
+		if (door[choice1] == 1) {
+			//之後換了就不會中獎
+			choice2 = rand() % 3;
+			if (door[choice2] == 1) {
+				win_same++;
+			}
+		}
+		if (door[choice1] != 1) { //選擇不是羊的時候
+			choice2 = rand() % 3;
+			if (choice2 != choice1) {
+				if (door[choice2] == 1) {
+					win_change++;
+				}
+			}
+		}
+	}
+	change = (win_change * 100) / (win_change + win_same);
+	same = (win_same * 100) / (win_change + win_same);
+	printf("一萬次的嘗試中勝利時\n方法A(維持原本選擇)贏得車子的機率: 百分之%d\n方法B(改變選擇後贏得車子)的機率: 百分之%d\n", same,change);
+
+	system("pause");
+	return 0;
+}
