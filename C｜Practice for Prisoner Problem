@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>   /* 時間相關函數 */
+#define test 10000
+#define size 100
+
+int main() {
+	int min = 0, max = 99;
+	int i, j, n, b, crim_num,pass , allpass = 0, choice;
+	int* box = malloc(sizeof(int) * size);
+	if (box == NULL) {
+	}
+	else {
+		srand((unsigned)time(NULL));
+		//總共執行一萬次100個監獄犯人的開箱
+		for (j = 1; j <= test; j++) {
+			//放100個箱子
+			for (b = 0; b < size; b++) {
+				box[b] = b;
+			}
+			for (b = 0; b < 1000; b++) {
+				int x1 = rand() % size;
+				int x2 = rand() % size;
+				int tmp = box[x1];
+				box[x1] = box[x2];
+				box[x2] = tmp;
+			}
+			/*印出箱子編號檢查是否有重複數字
+			for (b = 0; b < size; b++) {
+				printf("第%d個箱子編號%d\n", b, box[b]);
+			}*/
+
+			//100民逃犯輪流進入拆箱程序
+			pass = 0;
+			for (crim_num = 0; crim_num < size; crim_num++) {
+				choice = crim_num;
+				//printf("囚犯%d號", crim_num);
+				for (n = 0; n < (size / 2); n++) {
+					//printf("囚犯%d號比對打開第%d個箱子號碼%d\n", crim_num,choice, box[choice]);
+					if (crim_num == box[choice]) {
+						pass++;
+						//跳出迴圈
+						//printf("第%d個囚犯成功 第%d次\n",crim_num,pass);
+						break;
+					}
+					else {
+						choice = box[choice];
+					}
+				}
+			}
+			if (pass == size) {
+				allpass++;
+			}
+		}
+
+
+	}
+	double pass_rate = allpass / 10000.0;
+	printf("%d次試驗中共成功%d次", test, allpass);
+	printf("成功機率大約：%f",pass_rate);
+	system("pause");
+	free(box);
+	return 0;
+}
